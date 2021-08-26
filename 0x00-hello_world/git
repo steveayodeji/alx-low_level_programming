@@ -1,6 +1,0 @@
-#!/bin/bash
-chmod u+x *
-git status
-git add .
-git commit -m "Low Level Programming for ALX School Projects"
-git push -u origin master
