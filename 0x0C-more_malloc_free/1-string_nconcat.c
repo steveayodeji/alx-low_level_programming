@@ -1,68 +1,45 @@
+#include <stdlib.h>
 #include "main.h"
-/**
- *_strlen - count arrray
- *@s: array of elements
- *Return: int i
- */
-int _strlen(char *s)
-{
-	unsigned int i;
-
-	i = 0;
-	while (s[i] != '\0') /*Count character of string*/
-	{
-		i++;
-	}
-	return (i);
-}
 
 /**
- *string_nconcat - concatenates two strings
- *@s1: string
- *@s2: string
- *@n: number bytes
- *Return: char dst
+ * *string_nconcat - concatenates n bytes of a string to another string
+ * @s1: string to append to
+ * @s2: string to concatenate from
+ * @n: number of bytes from s2 to concatenate to s1
+ *
+ * Return: pointer to the resulting string
  */
 char *string_nconcat(char *s1, char *s2, unsigned int n)
 {
-	char *dst;
-	unsigned int i, count, j, size, size_1, size_2;
+	char *s;
+	unsigned int i = 0, j = 0, len1 = 0, len2 = 0;
 
-	if (s1 == NULL) /*If the array is empty*/
-		s1 = "";
+	while (s1 && s1[len1])
+		len1++;
+	while (s2 && s2[len2])
+		len2++;
 
-	if (s2 == NULL)
-		s2 = "";
-
-	size_1 = _strlen(s1);
-	size_2 = _strlen(s2);
-
-	if (n >= size_2)
-	{
-		count = size_2;
-	}
+	if (n < len2)
+		s = malloc(sizeof(char) * (len1 + n + 1));
 	else
-	{
-		count = n;
-	}
-	/*count size total*/
-	size = size_1 + count + 1;
-	/*malloc*/
-	dst = (char *) malloc(size * sizeof(char));
-	if (dst == 0)
-	{
+		s = malloc(sizeof(char) * (len1 + len2 + 1));
+
+	if (!s)
 		return (NULL);
-	}
-	/*Concatenate arrays*/
+
+	while (i < len1)
 	{
-		for (i = 0; *(s1 + i) != '\0'; i++)
-			*(dst + i) = *(s1 + i);
-		for (j = 0; j < count; j++)
-		{
-			*(dst + i) = *(s2 + j);
-			i++;
-		}
-		*(dst + i) = '\0';
+		s[i] = s1[i];
+		i++;
 	}
-	return (dst);
+
+	while (n < len2 && i < (len1 + n))
+		s[i++] = s2[j++];
+
+	while (n >= len2 && i < (len1 + len2))
+		s[i++] = s2[j++];
+
+	s[i] = '\0';
+
+	return (s);
 }
